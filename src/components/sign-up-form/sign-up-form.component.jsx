@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 import '../sign-up-form/sign-up-form.styles.scss';
@@ -14,12 +15,14 @@ const defaultFormFields ={
 
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
+
+    //destructured the default state thatis now set to the default formfield
     const {displayName, email, password, confirmPassword} = formFields;
 
-console.log(formFields)
+
 
 const resetFormFields = () =>{
-    setFormFields(defaultFormFields)
+    setFormFields(defaultFormFields);
 }
 
     const handleSubmit = async(event) =>{
@@ -34,26 +37,33 @@ const resetFormFields = () =>{
                 email, 
                 password);
 
-            await createUserDocumentFromAuth(user, {displayName});
-            resetFormFields();
+           
+
+             await createUserDocumentFromAuth(user, {displayName});
+             resetFormFields();
 
         }catch(error){
+            console.log(error)
             
-            if(error.code === 'auth/email-already-in-use'){
-                alert("cannot create user, email already in use")
-            }else{
-                console.log('user creation encountered an error', error)
-            }
+            if(error.message === 'auth/email-already-in-use'){
+               alert("cannot create user, email already in use")
+             }else{
+                 console.log('user creation encountered an error Tobias', error)
+             }
         }
     }
 
 
     const handleChange = (event) =>{
+        //destructuring the event. target values from the input field
         const {name, value} = event.target;
 
         setFormFields({
+            //since you only want to update a single input field you ought to be very specific
             ...formFields, [name]:value
-        })
+        });
+
+        console.log(formFields)
     }
 
 
@@ -102,8 +112,9 @@ const resetFormFields = () =>{
                     name="confirmPassword" 
                     value={confirmPassword} 
                 />
-                <Button>Sign Up</Button>
+                <Button type='submit'>Sign Up</Button>
             </form>
+           
         </div>
     )
 

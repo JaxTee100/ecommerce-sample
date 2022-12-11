@@ -5,7 +5,7 @@ import Navigation from './routes/navigation/navigation.component';
 import '../src/components/category-item/category.styles.scss'
 
 import Home from './routes/home/home.component';
-import SignIn from './signin/sign-in.component';
+import Authentication from './authentication/authentication.component';
 
 
 
@@ -25,7 +25,7 @@ const App = () =>{
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
         <Route path="shop" element={<Shop />} />
-        <Route path="sign-in" element={<SignIn />} />
+        <Route path="auth" element={<Authentication />} />
       </Route>
       
     </Routes>

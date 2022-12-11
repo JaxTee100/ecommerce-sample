@@ -4,7 +4,8 @@ import {
     signInWithRedirect,
     signInWithPopup,
     GoogleAuthProvider,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword
 
 } from "firebase/auth";
 import {
@@ -45,6 +46,7 @@ const firebaseConfig = {
 
 //directly points the db in the console
   export const db = getFirestore();
+
 //here this function checks if the a db exists with a particular collection and if it doesnt it should create a new one
   export const createUserDocumentFromAuth = async (userAuth, additionalInformation={}) =>{
     const userDocRef = doc(db, 'users', userAuth.uid);
@@ -85,5 +87,12 @@ const firebaseConfig = {
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
     if(!email || !password) return;
 
-    createUserWithEmailAndPassword(auth, email, password)
+    return await createUserWithEmailAndPassword(auth, email, password)
+}
+
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if(!email || !password) return;
+
+  signInWithEmailAndPassword(auth, email, password)
 }
