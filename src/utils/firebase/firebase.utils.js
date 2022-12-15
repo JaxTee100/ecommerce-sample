@@ -5,7 +5,9 @@ import {
     signInWithPopup,
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
 
 } from "firebase/auth";
 import {
@@ -52,12 +54,13 @@ const firebaseConfig = {
     const userDocRef = doc(db, 'users', userAuth.uid);
 
     
-
     const userSnapshot = await getDoc(userDocRef);
-   
+    
 
-    // if user doesnt exists
+    // if user doesnt exists then create a new snapshot
     if(!userSnapshot.exists()) {
+      console.log("doesnt exist")
+
         const {displayName, email} = userAuth;
         const createdAt = new Date();
 
@@ -72,27 +75,37 @@ const firebaseConfig = {
         } catch(error){
             console.log("error creating the user".error.message);
         }
-  }
-  //if the user exists
+    }
+  //if the user exists you just return the userDocRef
   return userDocRef
 
 
 
 
-    //if it doesnt the set it
-
-    //return userDocRef
+    
   }
-
+//for signing up a user
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
-    if(!email || !password) return;
-
-    return await createUserWithEmailAndPassword(auth, email, password)
-}
-
-
-export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  //check if the password and email field are field else return  
   if(!email || !password) return;
 
-  signInWithEmailAndPassword(auth, email, password)
+  //this function awaits and creates a user in the db and initializes it with email, auth anad passowrd
+  return await createUserWithEmailAndPassword(auth, email, password)
 }
+
+//for signing in a user: here you require the email and password to sign in 
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  
+  //checks for password and email
+  if(!email || !password) return;
+
+  //returns a method from the firebase that initializes the auth with email and password
+  return await signInWithEmailAndPassword(auth, email, password);
+}
+
+
+//this simply signs out a user and only requires the auth
+export const signOutUser = async() =>  signOut(auth);
+
+
+export const onAuthStateChangedListener= (callback) => onAuthStateChanged(auth, callback)

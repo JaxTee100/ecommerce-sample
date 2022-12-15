@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import { useState, useContext } from "react";
+import { createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 import '../sign-in-form/sign-in-form.styles.scss';
 import Button from "../button/button.component";
+
 const defaultFormFields ={
     email: "",
     password: "",
@@ -15,6 +16,11 @@ const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password, } = formFields;
 
+    const [inside, setInside] = useState(false)
+
+
+    
+
 
 
 const resetFormFields = () =>{
@@ -22,8 +28,9 @@ const resetFormFields = () =>{
 }
 
 const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    
+    await signInWithGooglePopup();
+   
 }
 
     const handleSubmit = async(event) =>{
@@ -31,9 +38,14 @@ const signInWithGoogle = async () => {
 
       
         try{
-            const response =await signInAuthUserWithEmailAndPassword(email, password)
-            console.log(response)
+            const {user} = await signInAuthUserWithEmailAndPassword(email, password);
+            
+             
+
+     
             resetFormFields();
+           
+            setInside(prev => !prev);
 
         }catch(error){
             switch(error.code){
@@ -97,6 +109,7 @@ const signInWithGoogle = async () => {
                <div className="buttons-container">
                 <Button type="submit">Sign In</Button>
                 <Button type='button' buttonType='google' onClick={signInWithGoogle}>Google Sign In</Button>
+                <h1>{inside && "im inside"}</h1>
                </div>
                
             </form>

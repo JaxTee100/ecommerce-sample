@@ -1,9 +1,11 @@
 import { useState } from "react";
 
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
+
 import FormInput from "../form-input/form-input.component";
 import '../sign-up-form/sign-up-form.styles.scss';
 import Button from "../button/button.component";
+
 const defaultFormFields ={
     displayName: "",
     email: "",
@@ -15,9 +17,16 @@ const defaultFormFields ={
 
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
+    const [checked, setChecked] = useState(false)
 
     //destructured the default state thatis now set to the default formfield
     const {displayName, email, password, confirmPassword} = formFields;
+    //here i need to update the current user and tthus i used
+    //contexxt to pass the props from the top. if i needed the 
+    //current ser for anything it would easily be passed here too
+    
+
+
 
 
 
@@ -33,19 +42,20 @@ const resetFormFields = () =>{
             return;
         }
         try{
-            const {user} = createAuthUserWithEmailAndPassword(
+            const {user} = await createAuthUserWithEmailAndPassword(
                 email, 
                 password);
-
-           
+            //i used the et function i got from thee context to update my current here
+        
 
              await createUserDocumentFromAuth(user, {displayName});
+             setChecked(prev => !prev)
              resetFormFields();
 
         }catch(error){
             console.log(error)
             
-            if(error.message === 'auth/email-already-in-use'){
+            if(error.code === 'auth/email-already-in-use'){
                alert("cannot create user, email already in use")
              }else{
                  console.log('user creation encountered an error Tobias', error)
@@ -63,7 +73,7 @@ const resetFormFields = () =>{
             ...formFields, [name]:value
         });
 
-        console.log(formFields)
+       
     }
 
 
@@ -112,6 +122,7 @@ const resetFormFields = () =>{
                     name="confirmPassword" 
                     value={confirmPassword} 
                 />
+                <h3>{checked && "user signed up"}</h3>
                 <Button type='submit'>Sign Up</Button>
             </form>
            
