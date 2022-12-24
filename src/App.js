@@ -2,7 +2,7 @@ import React from 'react';
 import {Routes, Route} from 'react-router-dom';
 import Navigation from './routes/navigation/navigation.component';
 
-import '../src/components/category-item/category.styles.scss'
+import './components/directory-item/directory.styles.jsx'
 
 import Home from './routes/home/home.component';
 import Authentication from './authentication/authentication.component';
@@ -24,7 +24,7 @@ const App = () =>{
     <Routes>
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
-        <Route path="shop" element={<Shop />} />
+        <Route path="shop/*" element={<Shop />} />
         <Route path="auth" element={<Authentication />} />
         <Route path="checkout" element={<Checkout />} />
       </Route>
