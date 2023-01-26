@@ -6,19 +6,16 @@ const INITIAL_STATE = {
 
 
 //this is a reducer for the user. it takes in the initial state and manipulates it with the action
-export const userReducer = (state=INITIAL_STATE, action) => {
-   
-    const {type, payload} = action
-
+export const userReducer =(state=INITIAL_STATE, action) =>{
+    const {type, payload} = action;
     switch(type){
         case USER_ACTION_TYPES.SET_CURRENT_USER:
-            return{
+            return {
                 ...state,
                 currentUser: payload
             }
         default:
             return state;
-
     }
 }
 
