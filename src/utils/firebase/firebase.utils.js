@@ -88,6 +88,7 @@ const firebaseConfig = {
 
 //here this function checks if the a db exists with a particular collection and if it doesnt it should create a new one
   export const createUserDocumentFromAuth = async (userAuth, additionalInformation={}) =>{
+    if(!userAuth) return
     const userDocRef = doc(db, 'users', userAuth.uid);
 
     
@@ -96,10 +97,11 @@ const firebaseConfig = {
 
     // if user doesnt exists then create a new snapshot
     if(!userSnapshot.exists()) {
-      console.log("doesnt exist")
+      
 
         const {displayName, email} = userAuth;
         const createdAt = new Date();
+        
 
         try {
             await setDoc(userDocRef, {
@@ -108,11 +110,13 @@ const firebaseConfig = {
                 createdAt,
                 ...additionalInformation
             });
+            
 
         } catch(error){
             console.log("error creating the user".error.message);
         }
     }
+    
   //if the user exists you just return the userDocRef
   return userDocRef
 

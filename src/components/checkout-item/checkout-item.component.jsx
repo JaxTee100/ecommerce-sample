@@ -10,6 +10,7 @@ const CheckoutItem = ({cartItem})=>{
     const dispatch = useDispatch();
 
     const cartItems = useSelector(selectCartItems)
+    
 
 
 

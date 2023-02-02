@@ -1,6 +1,8 @@
 import { createAction } from "../../utils/reducer.utils";
 import { CART_ACTION_TYPES } from "./cart.types";
 
+
+//utility functions that aids the helper function
 const addCartItem = (cartItems, productToAdd) =>{
     //find if card items contains product to add
     const existingCartItem = cartItems.find(
@@ -52,6 +54,8 @@ const clearCartItem = (cartItems,cartItemToClear ) =>{
 export const setIsCartOpen = (boolean) => createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, boolean)
 
 
+
+//helper functions
 export const addItemToCart = (cartItems, productToAdd) =>{
     const newCartItems = addCartItem(cartItems, productToAdd)
     return createAction(CART_ACTION_TYPES.SET_CART_ITEMS,newCartItems)
